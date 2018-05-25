@@ -7,7 +7,19 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/reset.css'
-
+router.beforeEach((to, from, next) => {
+  var userInfo = JSON.parse(sessionStorage.getItem('userInfoStorage'))
+  console.log(userInfo)
+  if (userInfo) {
+    next()
+  } else {
+    if (to.path === '/Login') {
+      next()
+    } else {
+      next('/Login')
+    }
+  }
+})
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 /* eslint-disable no-new */

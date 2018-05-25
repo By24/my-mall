@@ -11,6 +11,9 @@
        <div :class="isShow ? 'cont_right' : 'rHide'">
            <header>
                <a href="javascript:;" class="scale" @click='scale'></a>
+               <ul class="userInfo">
+                 <li @click="loginOut">退出</li>
+               </ul>
            </header>
            <div class="page">
              <y-product-list></y-product-list>
@@ -30,8 +33,12 @@ export default {
     }
   },
   methods: {
-    scale: function () {
+    scale () {
       this.isShow = !this.isShow
+    },
+    loginOut () {
+      sessionStorage.clear('userInfoStorage')
+      this.$router.push({ path: 'Login' })
     }
   },
   components: {
@@ -71,6 +78,13 @@ header{
   background: #ccc;
   top: 20px;
   left: 20px;
+}
+.userInfo{
+  position: absolute;
+  right: 20px;
+}
+.userInfo li{
+  cursor:pointer
 }
 .nav{
   overflow-y: scroll
