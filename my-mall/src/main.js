@@ -9,7 +9,6 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/reset.css'
 router.beforeEach((to, from, next) => {
   var userInfo = JSON.parse(sessionStorage.getItem('userInfoStorage'))
-  console.log(userInfo)
   if (userInfo) {
     next()
   } else {

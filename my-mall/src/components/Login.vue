@@ -8,7 +8,7 @@
                 <el-input v-model="ruleForm.pwd"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')">登陆</el-button>
+                <el-button type="primary" @click="submitForm('ruleForm')" :loading="loading">登陆</el-button>
                 <el-button @click="resetForm('ruleForm')">注册</el-button>
             </el-form-item>
         </el-form>
@@ -33,18 +33,21 @@ export default {
           { required: true, message: '请输入您的登陆密码', trigger: 'blur' },
           { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      loading: false
     }
   },
   methods: {
     submitForm (formName) {
+      var userInfo = {user: this.ruleForm.user, pwd: this.ruleForm.pwd}
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          var userInfo = {}
+          this.loading = true
           requestLogin(userInfo).then(res => {
+            this.loading = false
             var { msg, code, data } = res
             if (code === 200) {
-              sessionStorage.setItem('userInfoStorage', JSON.stringify(data))
+              sessionStorage.setItem('userInfoStorage', JSON.stringify(data.user))
               this.$router.push({ path: '/' })
             } else {
               this.$message({

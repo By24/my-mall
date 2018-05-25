@@ -13,6 +13,10 @@ app.all('*', function (req, res, next) {
     if (req.method == "OPTIONS") res.send(200);/*让options请求快速返回*/
     else next();
 });
+
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+
 app.use('/api', require("./routers/login"))
 app.use('/', require("./routers/main"))
 app.use('/sysList', require("./routers/sysList"))

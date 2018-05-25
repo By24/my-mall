@@ -5,6 +5,7 @@ import Login from '@/components/Login'
 import System from '@/components/System'
 
 import ProductList from '@/components/commons/ProductList'
+import UserList from '@/components/commons/UserList'
 Vue.use(Router)
 
 export default new Router({
@@ -22,6 +23,10 @@ export default new Router({
           path: '/ProductList',
           name: 'ProductList',
           component: ProductList
+        }, {
+          path: '/UserList',
+          name: 'UserList',
+          component: UserList
         }]
     }
   ]
