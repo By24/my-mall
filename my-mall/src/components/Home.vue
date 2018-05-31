@@ -12,7 +12,12 @@
     <section v-for="item in card" :key="item.name">
       <div class="card_titel"><p class="card_name">{{item.name}}</p><a href="" class="card_more">更多 ></a></div>
       <div class="card_cont">
-        {{item.left}}
+        <div class="card_cont_left">
+
+        </div>
+        <div class="card_cont_right">
+
+        </div>
       </div>
     </section>
     <y-footer></y-footer>
@@ -103,8 +108,19 @@ section{
   margin-right: 10px
 }
 .card_cont{
-  padding: 10px;
-  height: 400px;
+  display: flex;
+  /* padding: 10px; */
+  height: 440px;
   background: #ffffff
+}
+.card_cont_left{
+  height: 100%;
+  width: 600px;
+  border: 1px solid saddlebrown
+}
+.card_cont_right{
+  height: 100%;
+  width: 600px;
+  border: 1px solid saddlebrown
 }
 </style>
