@@ -230,7 +230,8 @@ export default {
     },
     handleClose () {
       this.editForm = false
-    }
+    },
+    onSubmit () {}
   }
 }
 </script>

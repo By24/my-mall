@@ -20,7 +20,7 @@
           <div class="good-item" >
             <div><div class="good-img">
               <a href="/goodsDetails?productId=100022201" class="">
-              <img alt="《深泽直人》" src="http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg" lazy="loaded">
+                <img alt="《深泽直人》" src="http://image.smartisanos.cn/resource/5e4e40120d09fb6791f9430f914c6f68.jpg" lazy="loaded">
               </a>
               </div> 
               <h6 class="good-title">《深泽直人》</h6> 
