@@ -1,19 +1,14 @@
 <template>
-    <div class="footer"></div>
+    <div>商品分类管理</div>
 </template>
 
 <script>
 export default {
-  name: 'Footer',
   data () {
     return {}
   }
 }
 </script>
-
 <style scoped>
-.footer{
-  width: 100%;
-  height: 120px;
-}
+
 </style>
