@@ -1,52 +1,25 @@
 <template>
 <section>
     <!--工具条-->
-    <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-        <el-form :inline="true" :model="filters">
-            <el-form-item>
-                <el-input v-model="filters.name" placeholder="订单号"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type='info' icon='el-icon-search' @click="getUsers">查询</el-button>
-            </el-form-item>
-            <el-form-item style="margin-left:30px">
-                <el-button type='info' @click="handleAdd">打印订单</el-button>
-                <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
-            </el-form-item>
-        </el-form>
+    <el-col :span="24" class="toolbar">
+        <el-button type='info' @click="handleAdd">添加模块</el-button>
+        <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
     </el-col>
-
     <!--列表-->
     <el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
-        <el-table-column type="selection" width="40">
+        <el-table-column type="selection" width="55">
         </el-table-column>
-        <el-table-column type="index" width="40">
+        <el-table-column type="index" width="60">
         </el-table-column>
-        <el-table-column prop="name" label="订单号" sortable>
+        <el-table-column prop="name" label="ID" sortable>
         </el-table-column>
-        <el-table-column prop="name" label="支付金额" sortable>
+        <el-table-column prop="sex" label="快递名称" :formatter="formatSex" sortable>
         </el-table-column>
-        <el-table-column prop="name" label="用户账号" sortable>
+        <el-table-column prop="phone" label="排序值" sortable>
         </el-table-column>
-        <el-table-column prop="name" label="备注" sortable>
-        </el-table-column>
-        <el-table-column prop="name" label="创建时间" sortable>
-        </el-table-column>
-        <el-table-column prop="sex" label="物流号" sortable>
-        </el-table-column>
-        <el-table-column prop="phone" label="支付时间" sortable>
-        </el-table-column>
-        <el-table-column prop="address" label="关闭时间" sortable>
-        </el-table-column>
-        <el-table-column prop="logoDate" label="完成时间"  sortable>
-        </el-table-column>
-        <el-table-column prop="logoDate" label="订单状态"  sortable>
-        </el-table-column>
-        <el-table-column label="操作" width="300">
+        <el-table-column label="操作" width="200">
             <template slot-scope="scope">
-                <el-button size="small" @click="handleEdit(scope.$index, scope.row)">发货</el-button>
-                <el-button size="small" @click="handleEdit(scope.$index, scope.row)">备注</el-button>
-                <el-button size="small" @click="handleEdit(scope.$index, scope.row)">取消</el-button>
+                <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                 <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
             </template>
         </el-table-column>
@@ -67,58 +40,35 @@
         </el-pagination> -->
     </el-col>
 
-    <!--打印界面-->
-    <el-dialog title="打印预览" v-model="addFormVisible" :visible.sync="editFormVisible" :close-on-click-modal="false">
-        <h1 class="order_title">商城订单信息</h1>
-        <template>
-            <el-form label-position='left' inline class='demo-table-expand'>
-                <el-form-item label='会员名称：'>
-                    <span>}</span>
-                </el-form-item>
-                <el-form-item label='下单时间：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='订单编号：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='支付方式：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='付款时间：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='发货时间：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='发货单号：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='收货人：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='手机：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='收货地址：'>
-                    <span></span>
-                </el-form-item>
-            </el-form>
-        </template>
-        <el-table :data="users"  highlight-current-row v-loading="listLoading" @selection-change="selsChange" border style="width: 100%;text-align: center;">
-            <el-table-column prop="name" label="商品名称">
-            </el-table-column>
-            <el-table-column prop="name" label="商品ID">
-            </el-table-column>
-            <el-table-column prop="name" label="价格">
-            </el-table-column>
-            <el-table-column prop="name" label="数量">
-            </el-table-column>
-            <el-table-column prop="name" label="小计">
-            </el-table-column>
-        </el-table>
+    <!--编辑界面-->
+    <el-dialog title="编辑" v-model="editFormVisible" :visible.sync="editFormVisible" :close-on-click-modal="false">
+        <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+            <el-form-item label="姓名" prop="name">
+                <el-input v-model="editForm.name" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="年龄">
+                <el-input-number v-model="editForm.age" :min="0" :max="200"></el-input-number>
+            </el-form-item>
+        </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
-            <el-button type="primary" @click.native="addSubmit" :loading="addLoading">打印</el-button>
+            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+        </div>
+    </el-dialog>
+
+    <!--新增界面-->
+    <el-dialog title="新增" v-model="addFormVisible" :visible.sync="addFormVisible" :close-on-click-modal="false">
+        <el-form :model="addForm" label-width="100px" :rules="addFormRules" ref="addForm">
+            <el-form-item label="快递名称" prop="name">
+                <el-input v-model="addForm.name" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="排序值">
+                <el-input-number v-model="addForm.age" :min="0" :max="200"></el-input-number>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="addFormVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
         </div>
     </el-dialog>
 </section>
@@ -198,11 +148,10 @@ export default {
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
     },
-    // 显示弹框
     handleAdd () {
-     this.editFormVisible = true
+      this.addFormVisible = true
     },
-    //  打印
+    //  新增
     addSubmit: function () {
       this.$refs.addForm.validate((valid) => {
         if (valid) {
@@ -228,9 +177,8 @@ export default {
       this.sels = sels
     },
     handleEdit: function (index, row) {
-      console.log(index, row)
+      this.editFormVisible = true
     },
-
     // 批量删除
     batchRemove: function () {
       var ids = this.sels.map(item => item.id).toString()
@@ -277,25 +225,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  .demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand label {
-    width: 90px;
-    color: #99a9bf;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
-  }
-  .order_title{
-      font-size: 30px;
-      text-align: center;
-      padding: 0px 0 25px 0;
-      font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-  }
-</style>
-

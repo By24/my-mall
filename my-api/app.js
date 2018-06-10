@@ -18,8 +18,12 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.use('/api', require("./routers/login"))
-app.use('/', require("./routers/main"))
+// app.use('/', require("./routers/main"))
 app.use('/sysList', require("./routers/sysList"))
+//商城管理
+app.use('/mall', require("./routers/mallManage"))
+// 用户管理
+app.use('/users', require("./routers/users"))
 
 mongoose.connect('mongodb://127.0.0.1:27017/adminData', function (err) {
     if (err) {

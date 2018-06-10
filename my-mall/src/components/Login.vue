@@ -21,17 +21,17 @@ export default {
   data () {
     return {
       ruleForm: {
-        user: '',
-        pwd: ''
+        user: '喻波',
+        pwd: '123'
       },
       rules: {
         user: [
           { required: true, message: '请输入您的登陆账号', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
         ],
         pwd: [
           { required: true, message: '请输入您的登陆密码', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
         ]
       },
       loading: false

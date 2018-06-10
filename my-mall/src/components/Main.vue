@@ -1,8 +1,8 @@
 <template>
 <el-row class="container">
   <el-col :span="24" class="header">
-    <el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
-      {{collapsed?'0.0':sysName}}
+    <el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'" >
+        {{collapsed?'0.0':sysName}}
     </el-col>
     <el-col :span="10">
       <div class="tools" @click.prevent="collapse">
@@ -103,14 +103,18 @@ export default {
     },
     handleselect: function (a, b) {
     },
+    onHome: function() {
+      console.log(11)
+      this.$router.push('/')
+    },
     // 退出登录
     logout: function () {
       var _this = this
       this.$confirm('确认退出吗?', '提示', {
         // type: 'warning'
       }).then(() => {
-        sessionStorage.removeItem('user')
-        _this.$router.push('/login')
+        sessionStorage.removeItem('userInfoStorage')
+        _this.$router.push('/Login')
       }).catch(() => {
 
       })
@@ -124,11 +128,12 @@ export default {
     }
   },
   mounted () {
-    var user = sessionStorage.getItem('user')
+    var user = sessionStorage.getItem('userInfoStorage')
+    console.log(user)
     if (user) {
       user = JSON.parse(user)
-      this.sysUserName = user.name || ''
-      this.sysUserAvatar = user.avatar || ''
+      this.sysUserName = user.name || '喻波'
+      this.sysUserAvatar = user.avatar || 'http://img1.imgtn.bdimg.com/it/u=2171197055,986924192&fm=27&gp=0.jpg'
     }
   }
 }
@@ -172,6 +177,7 @@ export default {
   border-color: rgba(238,241,146,0.3);
   border-right-width: 1px;
   border-right-style: solid;
+  cursor: pointer;
 }
 .container .header .logo img {
   width: 40px;

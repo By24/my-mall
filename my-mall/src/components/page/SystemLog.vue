@@ -4,13 +4,16 @@
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
         <el-form :inline="true" :model="filters">
             <el-form-item>
-                <el-input v-model="filters.name" placeholder="订单号"></el-input>
+                <el-date-picker v-model="value7" type="daterange" align="right" unlink-panels range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                :picker-options="pickerOptions2">
+                </el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-button type='info' icon='el-icon-search' @click="getUsers">查询</el-button>
+                <el-button type='info' @click="getUsers">查询</el-button>
             </el-form-item>
-            <el-form-item style="margin-left:30px">
-                <el-button type='info' @click="handleAdd">打印订单</el-button>
+            <el-form-item>
                 <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
             </el-form-item>
         </el-form>
@@ -22,31 +25,30 @@
         </el-table-column>
         <el-table-column type="index" width="40">
         </el-table-column>
-        <el-table-column prop="name" label="订单号" sortable>
+        <el-table-column prop="name" label="ID" sortable>
         </el-table-column>
-        <el-table-column prop="name" label="支付金额" sortable>
+        <el-table-column prop="sex" label="日志名称" :formatter="formatSex">
         </el-table-column>
-        <el-table-column prop="name" label="用户账号" sortable>
+        <el-table-column prop="phone" label="类型" >
         </el-table-column>
-        <el-table-column prop="name" label="备注" sortable>
+        <el-table-column prop="address" label="请求路径">
         </el-table-column>
-        <el-table-column prop="name" label="创建时间" sortable>
+        <el-table-column prop="logoDate" label="请求类型">
         </el-table-column>
-        <el-table-column prop="sex" label="物流号" sortable>
+        <el-table-column prop="logoDate" label="请求参数">
         </el-table-column>
-        <el-table-column prop="phone" label="支付时间" sortable>
+        <el-table-column prop="logoDate" label="登录用户">
         </el-table-column>
-        <el-table-column prop="address" label="关闭时间" sortable>
+        <el-table-column prop="logoDate" label="IP">
         </el-table-column>
-        <el-table-column prop="logoDate" label="完成时间"  sortable>
+        <el-table-column prop="logoDate" label="IP位置">
         </el-table-column>
-        <el-table-column prop="logoDate" label="订单状态"  sortable>
+                <el-table-column prop="logoDate" label="耗时">
         </el-table-column>
-        <el-table-column label="操作" width="300">
+                        <el-table-column prop="logoDate" label="创建时间">
+        </el-table-column>
+        <el-table-column label="操作" width="100">
             <template slot-scope="scope">
-                <el-button size="small" @click="handleEdit(scope.$index, scope.row)">发货</el-button>
-                <el-button size="small" @click="handleEdit(scope.$index, scope.row)">备注</el-button>
-                <el-button size="small" @click="handleEdit(scope.$index, scope.row)">取消</el-button>
                 <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
             </template>
         </el-table-column>
@@ -66,61 +68,6 @@
         <!-- <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
         </el-pagination> -->
     </el-col>
-
-    <!--打印界面-->
-    <el-dialog title="打印预览" v-model="addFormVisible" :visible.sync="editFormVisible" :close-on-click-modal="false">
-        <h1 class="order_title">商城订单信息</h1>
-        <template>
-            <el-form label-position='left' inline class='demo-table-expand'>
-                <el-form-item label='会员名称：'>
-                    <span>}</span>
-                </el-form-item>
-                <el-form-item label='下单时间：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='订单编号：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='支付方式：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='付款时间：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='发货时间：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='发货单号：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='收货人：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='手机：'>
-                    <span></span>
-                </el-form-item>
-                <el-form-item label='收货地址：'>
-                    <span></span>
-                </el-form-item>
-            </el-form>
-        </template>
-        <el-table :data="users"  highlight-current-row v-loading="listLoading" @selection-change="selsChange" border style="width: 100%;text-align: center;">
-            <el-table-column prop="name" label="商品名称">
-            </el-table-column>
-            <el-table-column prop="name" label="商品ID">
-            </el-table-column>
-            <el-table-column prop="name" label="价格">
-            </el-table-column>
-            <el-table-column prop="name" label="数量">
-            </el-table-column>
-            <el-table-column prop="name" label="小计">
-            </el-table-column>
-        </el-table>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click.native="editFormVisible = false">取消</el-button>
-            <el-button type="primary" @click.native="addSubmit" :loading="addLoading">打印</el-button>
-        </div>
-    </el-dialog>
 </section>
 </template>
 
@@ -171,7 +118,35 @@ export default {
         age: 0,
         birth: '',
         addr: ''
-      }
+      },
+      pickerOptions2: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+            picker.$emit('pick', [start, end]);
+          }
+        }]
+      },
+      value7: ''
     }
   },
   mounted () {
@@ -198,11 +173,8 @@ export default {
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
     },
-    // 显示弹框
-    handleAdd () {
-     this.editFormVisible = true
-    },
-    //  打印
+    handleAdd () {},
+    //  新增
     addSubmit: function () {
       this.$refs.addForm.validate((valid) => {
         if (valid) {
@@ -230,7 +202,6 @@ export default {
     handleEdit: function (index, row) {
       console.log(index, row)
     },
-
     // 批量删除
     batchRemove: function () {
       var ids = this.sels.map(item => item.id).toString()
@@ -277,25 +248,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  .demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand label {
-    width: 90px;
-    color: #99a9bf;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
-  }
-  .order_title{
-      font-size: 30px;
-      text-align: center;
-      padding: 0px 0 25px 0;
-      font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-  }
-</style>
-

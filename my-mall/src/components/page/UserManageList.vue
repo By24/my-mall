@@ -9,9 +9,9 @@
             <el-form-item>
                 <el-button type='info' @click="getUsers">查询</el-button>
             </el-form-item>
-            <el-form-item>
+            <!-- <el-form-item>
                 <el-button type='info' @click="handleAdd">新增</el-button>
-            </el-form-item>
+            </el-form-item> -->
         </el-form>
     </el-col>
 
@@ -21,18 +21,18 @@
         </el-table-column>
         <el-table-column type="index" width="60">
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="120" sortable>
+        <el-table-column prop="name" label="姓名" sortable>
         </el-table-column>
-        <el-table-column prop="sex" label="性别" width="100" :formatter="formatSex" sortable>
+        <el-table-column prop="sex" label="性别" :formatter="formatSex" sortable>
         </el-table-column>
-        <el-table-column prop="age" label="年龄" width="100" sortable>
+        <el-table-column prop="phone" label="电话号码" sortable>
         </el-table-column>
-        <el-table-column prop="birth" label="生日" width="120" sortable>
+        <el-table-column prop="address" label="收货地址" sortable>
         </el-table-column>
-        <el-table-column prop="addr" label="地址" min-width="180" sortable>
+        <el-table-column prop="logoDate" label="注册日期"  sortable>
         </el-table-column>
-        <el-table-column label="操作" width="150">
-            <template scope="scope">
+        <el-table-column label="操作" width="200">
+            <template slot-scope="scope">
                 <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                 <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
             </template>
@@ -42,8 +42,17 @@
     <!--工具条-->
     <el-col :span="24" class="toolbar">
         <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
-        <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+        <el-pagination
+          @size-change='handleSizeChange'
+          @current-change='handleCurrentChange'
+          :current-page='5'
+          :page-sizes='[100, 200, 300, 400]'
+          :page-size='1'
+          layout='total, sizes, prev, pager, next, jumper'
+          :total='users.length' style="float:right">
         </el-pagination>
+        <!-- <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+        </el-pagination> -->
     </el-col>
 
     <!--编辑界面-->
@@ -107,7 +116,6 @@
 <script>
 // import util from '../commons/util'
 import { getUserListPage, batchRemoveUser, addUser} from '../../api/api'
-
 export default {
   data () {
     return {
@@ -155,6 +163,9 @@ export default {
       }
     }
   },
+  mounted () {
+    this.getUsers()
+  },
   methods: {
     // 获取用户列表
     getUsers () {
@@ -163,13 +174,18 @@ export default {
         name: this.filters.name
       }
       this.listLoading = true
-      // NProgress.start();
       getUserListPage(para).then((res) => {
+        console.log(res)
         this.total = res.data.total
-        this.users = res.data.users
+        this.users = res.data
         this.listLoading = false
-        // NProgress.done();
       })
+    },
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
+    },
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
     },
     handleAdd () {},
     //  新增
@@ -197,6 +213,9 @@ export default {
     selsChange: function (sels) {
       this.sels = sels
     },
+    handleEdit: function (index, row) {
+      console.log(index, row)
+    },
     // 批量删除
     batchRemove: function () {
       var ids = this.sels.map(item => item.id).toString()
@@ -215,17 +234,31 @@ export default {
         })
       }).catch(() => {})
     },
+    // 单一删除
+    handleDel: function (index, row) {
+      this.$confirm('确认删除选中记录吗？', '提示', {
+        type: 'warning'
+      }).then(() => {
+        this.listLoading = true
+        let para = { ids: row.name }
+        batchRemoveUser(para).then((res) => {
+          this.listLoading = false
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+          this.getUsers()
+        })
+      }).catch(() => {})
+    },
     // 性别显示转换
     formatSex: function (row, column) {
-      return row.sex === 1 ? '男' : row.sex === 0 ? '女' : '未知'
+      return row.sex === 1 ? '先生' : row.sex === 0 ? '女士' : '未知'
     },
     handleCurrentChange (val) {
       this.page = val
       this.getUsers()
     }
-  },
-  mounted () {
-    this.getUsers()
   }
 }
 </script>

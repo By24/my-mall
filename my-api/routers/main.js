@@ -1,5 +1,5 @@
 var express = require('express')
-var Title = require('../models/Title')
+// var Title = require('../models/Title')
 var router = express.Router();
 const qn = require('qn');
 var fs = require('fs');
@@ -30,25 +30,25 @@ router.get('/navigation', function (req, res, next) {
         res.json(responseData)
         return
     }
-    Title.findOne({
-        title: title
-    }).then(function (info) {
-        if (info) {
-            responseData.code = 300;
-            responseData.message = '名字已存在';
-            res.json(responseData);
-            return;
-        }
-        var titles = new Title({
-            title: title,
-            date: new Date()
-        })
-        return titles.save()
-    }).then(function (newTitleInfo) {
-        responseData.code = 200;
-        responseData.message = '添加成功';
-        res.json(responseData);
-    })
+    // Title.findOne({
+    //     title: title
+    // }).then(function (info) {
+    //     if (info) {
+    //         responseData.code = 300;
+    //         responseData.message = '名字已存在';
+    //         res.json(responseData);
+    //         return;
+    //     }
+    //     var titles = new Title({
+    //         title: title,
+    //         date: new Date()
+    //     })
+    //     return titles.save()
+    // }).then(function (newTitleInfo) {
+    //     responseData.code = 200;
+    //     responseData.message = '添加成功';
+    //     res.json(responseData);
+    // })
 })
 // 上传
 router.all('/upload',  (req, res, next) => {
