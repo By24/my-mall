@@ -12,8 +12,6 @@
         </el-table-column>
         <el-table-column type="index" width="60">
         </el-table-column>
-        <el-table-column prop="_id" label="ID">
-        </el-table-column>
         <el-table-column label="图片">
           <template slot-scope="scope">
              <img src="../../assets/logo.png" alt="" class="img">
@@ -56,6 +54,13 @@
         <el-form :model="editForm" label-width="150px" :rules="addFormRules" ref="editForm">
             <el-form-item label="板块名称" prop="name">
                 <label>轮播图</label>
+            </el-form-item>
+            <el-form-item label="轮播类型">
+                <el-select v-model="addForm.type" @change="handleChange">
+                  <el-option label="3D轮播" value="3D轮播"></el-option>
+                  <el-option label="普通轮播" value="普通轮播"></el-option>
+                  <el-option label="视频播放" value="视频播放"></el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="关联类型">
                 <el-select v-model="editForm.type" @change="handleChange" style="width:320px">
@@ -101,6 +106,13 @@
         <el-form :model="addForm" label-width="150px" :rules="addFormRules" ref="addForm">
             <el-form-item label="板块名称">
                 <label>轮播图</label>
+            </el-form-item>
+            <el-form-item label="轮播类型">
+                <el-select v-model="addForm.type" @change="handleChange">
+                  <el-option label="3D轮播" value="3D轮播"></el-option>
+                  <el-option label="普通轮播" value="普通轮播"></el-option>
+                  <el-option label="视频播放" value="视频播放"></el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="关联类型">
                 <el-select v-model="addForm.type" @change="handleChange">

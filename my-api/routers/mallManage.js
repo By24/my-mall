@@ -30,9 +30,9 @@ router.post('/findModule', function (req, res, next) {
             responseData.code = 200;
             responseData.msg = 'ok';
             responseData.data = resCategory;
-            responseData.total = total;
-            responseData.pages = pages;
-            responseData.limit = limit;
+            responseData.total = total;//总条数
+            responseData.pages = pages;//总页数
+            responseData.limit = limit;//当前页数
             responseData.page = page;
             res.json(responseData);
             return

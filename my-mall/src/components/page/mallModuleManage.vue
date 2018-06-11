@@ -16,9 +16,9 @@
         </el-table-column>
         <el-table-column prop="type" label="类型" sortable>
         </el-table-column>
-        <el-table-column prop="dataNum" label="排序优先值" sortable>
+        <el-table-column prop="sort" label="排序优先值" sortable>
         </el-table-column>
-        <el-table-column prop="sort" label="最大容纳内容(商品)数" sortable>
+        <el-table-column prop="dataNum" label="最大容纳内容(商品)数" sortable>
         </el-table-column>
         <el-table-column prop="addr" label="备注">
         </el-table-column>
@@ -38,7 +38,7 @@
           @current-change='handleCurrentChange'
           :current-page='limit'
           :page-sizes='[10, 20, 30, 40]'
-          :page-size='1'
+          :page-size='page'
           layout='total, sizes, prev, pager, next, jumper'
           :total='total' style="float:right">
         </el-pagination>
@@ -51,9 +51,11 @@
                 <el-input v-model="editForm.title" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="类型">
-                <el-select v-model="editForm.type" placeholder="活动区域">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
+                <el-select v-model="editForm.type" placeholder="请选择版块类型">
+                  <el-option label="轮播图" value="轮播图"></el-option>
+                  <el-option label="热销类（2）" value="热销类（2）"></el-option>
+                  <el-option label="展示类（7）" value="展示类（7）"></el-option>
+                  <el-option label="活动类（4）" value="活动类（4）"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="排序优先值">
@@ -174,6 +176,7 @@ export default {
       getFindModule(para).then((res) => {
         console.log(res)
         this.total = res.total
+        // this.page = res.pages
         this.dataTable = res.data
         this.listLoading = false
       })
