@@ -24,7 +24,6 @@ router.beforeEach((to, from, next) => {
     requestLogin(userInfo).then(res => {
       var { msg, code, data } = res
       if (code === 200) {
-        console.log(res)
         next()
       } else {
         this.$message({

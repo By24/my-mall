@@ -22,6 +22,7 @@ app.use('/api', require("./routers/login"))
 app.use('/sysList', require("./routers/sysList"))
 //商城管理
 app.use('/mall', require("./routers/mallManage"))
+app.use('/mall', require("./routers/mallCarousel"))
 // 用户管理
 app.use('/users', require("./routers/users"))
 

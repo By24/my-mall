@@ -25,8 +25,8 @@
         <el-table-column label="操作" width="200">
             <template slot-scope="scope">
                 <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                <el-button type="success" size="small" @click="handleDel(scope.$index, scope.row)" v-if="scope.row.disabled">启用</el-button>
-                <el-button type="info" size="small" @click="handleDel(scope.$index, scope.row)" v-else>禁用</el-button>
+                <el-button type="success" size="small" @click="handleDel(scope.$index, scope.row)" v-if="scope.row.disabled">已开启</el-button>
+                <el-button type="info" size="small" @click="handleDel(scope.$index, scope.row)" v-else>已关闭</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -110,7 +110,7 @@
 
 <script>
 import util from '../commons/util'
-import { getFindModule, getRemoveModule, getAddModule, getEditodule, getiFModule} from '../../api/api'
+import { getFindModule, getRemoveModule, getAddModule, getEditModule, getiFModule} from '../../api/api'
 export default {
   data () {
     return {
@@ -243,7 +243,7 @@ export default {
           this.$confirm('确认修改吗？', '提示', {}).then(() => {
             this.addLoading = true
             let para = Object.assign({}, this.editForm)
-            getEditodule(para).then((res) => {
+            getEditModule(para).then((res) => {
               this.addLoading = false
               if(res.code === 200){
                 this.$message({

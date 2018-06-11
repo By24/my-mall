@@ -16,6 +16,12 @@ export const batchRemoveGoods = params => { return axios.post(`${base}/api/login
 //商城管理
 export const getFindModule = params => { return axios.post(`${base}/mall/findModule`, params).then(res => res.data) }
 export const getAddModule = params => { return axios.post(`${base}/mall/addModule`, params).then(res => res.data) }
-export const getEditodule = params => { return axios.post(`${base}/mall/editModule`, params).then(res => res.data) }
-export const getRemoveModule = params => { return axios.post(`${base}/mall/delete`, params).then(res => res.data) }
-export const getiFModule = params => { return axios.post(`${base}/mall/ifs`, params).then(res => res.data) }
+export const getEditModule = params => { return axios.post(`${base}/mall/editModule`, params).then(res => res.data) }
+export const getRemoveModule = params => { return axios.post(`${base}/mall/deleteModule`, params).then(res => res.data) }
+export const getiFModule = params => { return axios.post(`${base}/mall/disabledModule`, params).then(res => res.data) }
+
+export const getFindCarousel = params => { return axios.post(`${base}/mall/findCarousel`, params).then(res => res.data) }
+export const getAddCarousel = params => { return axios.post(`${base}/mall/addCarousel`, params).then(res => res.data) }
+export const getEditCarousel = params => { return axios.post(`${base}/mall/EditCarousel`, params).then(res => res.data) }
+export const getRemoveCarousel = params => { return axios.post(`${base}/mall/RemoveCarousel`, params).then(res => res.data) }
+export const getiFCarousel = params => { return axios.post(`${base}/mall/disabledCarousel`, params).then(res => res.data) }

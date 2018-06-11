@@ -1,5 +1,5 @@
 var express = require('express')
-var MallManage = require('../models/MallManage')
+var MallCarousel = require('../models/MallCarousel')
 var router = express.Router();
 
 //同一返回格式
@@ -12,12 +12,13 @@ router.use(function (req, res, next) {
     }
     next()
 })
-// 模块列表
-router.post('/findModule', function (req, res, next) {
+// 轮播图列表
+router.post('/findCarousel', function (req, res, next) {
+    console.log('成功')
     var page = Number(req.body.page || 1);
     var limit = Number(req.body.limit || 10);
     var pages = 0
-    MallManage.count().then(function (total) {//获取总条数
+    MallCarousel.count().then(function (total) {//获取总条数
         //计算总页数
         pages = Math.ceil(total / limit)
         //取值不能超过page
@@ -25,7 +26,7 @@ router.post('/findModule', function (req, res, next) {
         //取值不能小于1
         page = Math.max(page, 1)
         var skip = (page - 1) * limit;
-        MallManage.find().sort({ _id: -1 }).limit(limit).skip(skip).then(function (resCategory) {//获取页数
+        MallCarousel.find().sort({ _id: -1 }).limit(limit).skip(skip).then(function (resCategory) {//获取页数
           if(resCategory){
             responseData.code = 200;
             responseData.msg = 'ok';
@@ -44,43 +45,29 @@ router.post('/findModule', function (req, res, next) {
         });
     })
 })
-// 添加模块
-router.post('/addModule', function (req, res, next) {
-    var { title, type, sort, dataNum, disabled, addr } = req.body;
-    if(!title){
-        responseData.msg = "板块名称不能为空";
-        res.json(responseData)
-        return
-    }
-    MallManage.findOne({
-        title: title
-    }).then(function (info) {
-        if (info) {
-            responseData.code = 100;
-            responseData.msg = '板块已存在';
-            res.json(responseData);
-            return;
-        }
-        var MallManages = new MallManage({
-            title:title,
-            type:type,
-            sort:sort,
-            dataNum:dataNum,
-            disabled:disabled,
-            addr:addr,
-            time: new Date()
-        })
-        return MallManages.save()
-    }).then(function (newTitleInfo) {
+// 添加轮播图
+router.post('/addCarousel', function (req, res, next) {
+    var { title, type, showId, sort, disabled, imgUrl } = req.body;
+    var MallCarousels = new MallCarousel({
+        title:title,
+        type:type,
+        showId:showId,
+        sort:sort,
+        disabled:disabled,
+        imgUrl:imgUrl,
+        time: new Date()
+    })
+    MallCarousels.save().then(function(newTitleInfo){
+        console.log(newTitleInfo)
         responseData.code = 200;
         responseData.msg = '添加成功';
         res.json(responseData);
     })
 })
-// 修改分类
-router.post("/editModule", function (req, res, next) {
+// 修改
+router.post("/editCarousel", function (req, res, next) {
     var { title, type, sort, dataNum, disabled, addr, id} = req.body;
-    MallManage.findOne({
+    MallCarousel.findOne({
         _id: id
     }).then(function (category) {
         if (!category) {
@@ -96,51 +83,44 @@ router.post("/editModule", function (req, res, next) {
                 res.json(responseData);
                 return Promise.reject()
             } else {
-                return MallManage.findOne({
+                return MallCarousel.findOne({
                     _id: { $ne: id },
-                    title: title,
+                    title:title,
                     type:type,
+                    showId:showId,
                     sort:sort,
-                    dataNum:dataNum,
                     disabled:disabled,
-                    addr:addr,
+                    imgUrl:imgUrl,
                     updateTime: new Date()
                 })
             }
         }
     }).then(function (sameCategory) {
-        if (sameCategory) {
-            responseData.code = 100;
-            responseData.msg = '数据库中已经存在同名板块';
+        // 第一个参数是修改的id 第二个是修改的参数
+        MallCarousel.update({
+            _id: id
+        }, {
+            title:title,
+            type:type,
+            showId:showId,
+            sort:sort,
+            disabled:disabled,
+            imgUrl:imgUrl,
+            updateTime: new Date()
+        }).then(function () {
+            responseData.code = 200;
+            responseData.msg = '修改成功';
             res.json(responseData);
             return Promise.reject()
-        } else {
-            // 第一个参数是修改的id 第二个是修改的参数
-            MallManage.update({
-                _id: id
-            }, {
-                title:title,
-                type:type,
-                sort:sort,
-                dataNum:dataNum,
-                disabled:disabled,
-                addr:addr,
-                updateDate: new Date()
-            }).then(function () {
-                responseData.code = 200;
-                responseData.msg = '修改成功';
-                res.json(responseData);
-                return Promise.reject()
-            })
-        }
+        })
     })
 })
 //删除板块
-router.post('/deleteModule', function (req, res, next) {
+router.post('/deleteCarousel', function (req, res, next) {
     var str = req.body.id
         id = str.split(",")
     for(var i = 0; i < id.length; i++){
-        MallManage.remove({
+        MallCarousel.remove({
             _id: id[i]
         }).then(function(){
             if(i == id.length){
@@ -152,9 +132,9 @@ router.post('/deleteModule', function (req, res, next) {
     }
 })
 // 禁用、启用
-router.post('/disabledModule', function (req, res, next) {
+router.post('/disabledCarousel', function (req, res, next) {
   var { id, disabled } = req.body;
-  MallManage.update({
+  MallCarousel.update({
         _id: id
     }, {
         disabled:disabled,
@@ -166,7 +146,6 @@ router.post('/disabledModule', function (req, res, next) {
         }
         responseData.code = 200;
         res.json(responseData);
-        return Promise.reject()
     })
 })
 module.exports = router;

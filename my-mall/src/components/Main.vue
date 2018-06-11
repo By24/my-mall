@@ -104,7 +104,7 @@ export default {
     handleselect: function (a, b) {
     },
     onHome: function() {
-      console.log(11)
+      // console.log(11)
       this.$router.push('/')
     },
     // 退出登录
@@ -129,11 +129,11 @@ export default {
   },
   mounted () {
     var user = sessionStorage.getItem('userInfoStorage')
-    console.log(user)
+    // console.log(user)
     if (user) {
       user = JSON.parse(user)
-      this.sysUserName = user.name || '喻波'
-      this.sysUserAvatar = user.avatar || 'http://img1.imgtn.bdimg.com/it/u=2171197055,986924192&fm=27&gp=0.jpg'
+      this.sysUserName = user.name || 'admin'
+      this.sysUserAvatar = user.avatar || 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528690828953&di=cb9d4da99ac9e9435c4dc80ad1b0bba5&imgtype=0&src=http%3A%2F%2Fe.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fa686c9177f3e6709b52f456437c79f3df8dc5579.jpg'
     }
   }
 }
