@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     submitForm (formName) {
-      var userInfo = {user: this.ruleForm.user, pwd: this.ruleForm.pwd}
+      var userInfo = {username: this.ruleForm.user, password: this.ruleForm.pwd}
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true
@@ -47,7 +47,11 @@ export default {
             this.loading = false
             var { msg, code, data } = res
             if (code === 200) {
-              sessionStorage.setItem('userInfoStorage', JSON.stringify(data.user))
+              console.log(res)
+              sessionStorage.setItem('userInfoStorage', JSON.stringify({
+                username: data.username,
+                password: data.password
+              }))
               this.$router.push({ path: '/' })
             } else {
               this.$message({

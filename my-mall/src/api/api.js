@@ -2,9 +2,9 @@ import axios from 'axios'
 
 let base = 'http://127.0.0.1:8000'
 
-export const requestSysList = params => { return axios.post(`${base}/sysList`, params).then(res => res.data) }
-
 export const requestLogin = params => { return axios.post(`${base}/api/login`, params).then(res => res.data) }
+
+export const requestSysList = params => { return axios.post(`${base}/sysList`, params).then(res => res.data) }
 
 export const getUserListPage = params => { return axios.post(`${base}/users/userList`, params).then(res => res.data) }
 
@@ -25,3 +25,5 @@ export const getAddCarousel = params => { return axios.post(`${base}/mall/addCar
 export const getEditCarousel = params => { return axios.post(`${base}/mall/EditCarousel`, params).then(res => res.data) }
 export const getRemoveCarousel = params => { return axios.post(`${base}/mall/RemoveCarousel`, params).then(res => res.data) }
 export const getiFCarousel = params => { return axios.post(`${base}/mall/disabledCarousel`, params).then(res => res.data) }
+
+export const getFindPlate = params => { return axios.post(`${base}/mall/findModule`, params).then(res => res.data) }

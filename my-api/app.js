@@ -2,6 +2,7 @@ var express = require("express");
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser')
 var Cookies = require('cookies')
+var Admin = require('./models/Admin')
 var app = express();
 
 //允许所有js来进行访问
@@ -16,6 +17,26 @@ app.all('*', function (req, res, next) {
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
+// 设置cookie
+app.use(function (req, res, next) {
+    req.cookies = new Cookies(req, res);
+    // 解析用户登录cookies信息
+    req.userInfo = {};
+    if (req.cookies.get('userInfo')) {
+        try {
+            req.userInfo = JSON.parse(req.cookies.get('userInfo'))
+            Admin.findById(req.userInfo._id).then(function (userInfo) {
+                req.userInfo.isAdmin = Boolean(!userInfo.isAdmin)
+                console.log(req.userInfo.isAdmin,"33333333333333333")
+                next();
+            })
+        } catch (e) { }
+    } else {
+        next();
+    }
+})
+
 
 app.use('/api', require("./routers/login"))
 // app.use('/', require("./routers/main"))

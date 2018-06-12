@@ -19,7 +19,8 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
 router.beforeEach((to, from, next) => {
-  var userInfo = sessionStorage.getItem('userInfoStorage')
+  // sessionStorage.removeItem('userInfoStorage')
+  var userInfo = JSON.parse(sessionStorage.getItem('userInfoStorage'))
   if (userInfo != undefined) {
     requestLogin(userInfo).then(res => {
       var { msg, code, data } = res

@@ -14,7 +14,7 @@
         </el-table-column>
         <el-table-column prop="title" label="板块名称">
         </el-table-column>
-        <el-table-column prop="type" label="类型" sortable>
+        <el-table-column prop="type" label="类型">
         </el-table-column>
         <el-table-column prop="sort" label="排序优先值" sortable>
         </el-table-column>
@@ -84,9 +84,11 @@
                 <el-input v-model="addForm.title" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="类型">
-                <el-select v-model="addForm.type" placeholder="活动区域">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
+                <el-select v-model="addForm.type" placeholder="请选择版块类型">
+                  <el-option label="轮播图" value="轮播图"></el-option>
+                  <el-option label="热销类（2）" value="热销类（2）"></el-option>
+                  <el-option label="展示类（7）" value="展示类（7）"></el-option>
+                  <el-option label="活动类（4）" value="活动类（4）"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="排序优先值">

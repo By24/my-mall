@@ -1,11 +1,9 @@
 <template>
 <section>
-  <el-tabs v-model="activeName" @tab-click="handleClick" style="margin-top:10px">
-    <el-tab-pane  v-for="(item, index) in moduleList" :key="item+index" :label="item.title" :name="item.title">
     <!--工具条-->
     <div class="toolbar">
       <el-button type='info'>添加商品</el-button>
-      <el-button type="danger" @click="batchRemove" :disabled="sels.length===0">批量删除</el-button>
+      <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
     </div>
      <!--列表-->
     <el-table :data="dataTable" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
@@ -15,7 +13,7 @@
         </el-table-column>
         <el-table-column prop="name" label="ID" sortable>
         </el-table-column>
-        <el-table-column prop="sex" label="类别" :formatter="formatSex" sortable>
+        <el-table-column prop="sex" label="类别" sortable>
         </el-table-column>
         <el-table-column label="缩略图" sortable width="100px">
           <template slot-scope='props'>
@@ -55,8 +53,6 @@
           :total='total' style="float:right">
         </el-pagination>
     </el-col>
-    </el-tab-pane>
-  </el-tabs>
 </section>
 </template>
 
@@ -65,7 +61,7 @@ import { getFindPlate, batchRemoveUser, addUser} from '../../api/api'
 export default {
   data() {
     return {
-      activeName: '活动板块2',
+      activeName: '轮播图',
       filters: {
         name: ''
       },
@@ -111,10 +107,6 @@ export default {
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
     },
-    // 性别显示转换
-    formatSex: function (row, column) {
-      return row.sex === 1 ? '先生' : row.sex === 0 ? '女士' : '未知'
-    },
     // 批量删除
     batchRemove: function () {
       var ids = this.sels.map(item => item.id).toString()
@@ -132,9 +124,9 @@ export default {
           this.getInitialize()
         })
       }).catch(() => {})
-    },
+    }
   }
-};
+}
 </script>
 
 <style scoped>
